@@ -877,13 +877,10 @@ var _indexScss = require("./index.scss");
 // Main component (will eventually use all the others)
 class MyFlixApplication extends _reactDefault.default.Component {
     render() {
-        return(// <div className="my-flix">
-        //   <div>Good morning</div>
-        // </div>
-        /*#__PURE__*/ _reactDefault.default.createElement(_mainViewDefault.default, {
+        return(/*#__PURE__*/ _reactDefault.default.createElement(_mainViewDefault.default, {
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\index.jsx",
-                lineNumber: 15
+                lineNumber: 12
             },
             __self: this
         }));
@@ -22012,33 +22009,58 @@ parcelHelpers.defineInteropFlag(exports);
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 class MainView extends _reactDefault.default.Component {
+    constructor(){
+        super();
+        this.state = {
+            movies: [
+                {
+                    _id: 1,
+                    Title: 'Inception',
+                    Description: 'desc1...',
+                    ImagePath: '...'
+                },
+                {
+                    _id: 2,
+                    Title: 'The Shawshank Redemption',
+                    Description: 'desc2...',
+                    ImagePath: '...'
+                },
+                {
+                    _id: 3,
+                    Title: 'Gladiator',
+                    Description: 'desc3...',
+                    ImagePath: '...'
+                }
+            ]
+        };
+    }
     render() {
-        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+        const movies = this.state.movies;
+        if (movies.length === 0) return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
             className: "main-view",
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                lineNumber: 6
+                lineNumber: 19
             },
             __self: this
-        }, /*#__PURE__*/ _reactDefault.default.createElement("div", {
+        }, "The list is empty!"));
+        else return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "main-view",
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                lineNumber: 7
+                lineNumber: 22
             },
             __self: this
-        }, "Inception"), /*#__PURE__*/ _reactDefault.default.createElement("div", {
-            __source: {
-                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                lineNumber: 8
-            },
-            __self: this
-        }, "The Shawshank Redemption"), /*#__PURE__*/ _reactDefault.default.createElement("div", {
-            __source: {
-                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                lineNumber: 9
-            },
-            __self: this
-        }, "Gladiator")));
+        }, movies.map((movie)=>{
+            return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+                key: movie._id,
+                __source: {
+                    fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                    lineNumber: 24
+                },
+                __self: this
+            }, movie.Title));
+        })));
     }
 }
 exports.default = MainView;
