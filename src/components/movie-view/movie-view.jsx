@@ -17,14 +17,14 @@ export class MovieView extends React.Component{
         <span className="label">Description: </span>
         <span className="value">{movie.Description}</span>
       </div>
-      {/* <div className="movie-genere">
+      <div className="movie-genere">
         <span className="label">Genre: </span>
         <span className="value">{movie.Genre}</span>
       </div>
       <div className="movie-director">
         <span className="label">Director: </span>
         <span className="value">{movie.Director}</span>
-      </div> */}
+      </div>
        <button onClick={()=>{onBackClick(null);}}>Back</button>
     </div>
     );  
