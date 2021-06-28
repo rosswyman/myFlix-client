@@ -871,13 +871,12 @@ var _reactDefault = parcelHelpers.interopDefault(_react);
 var _reactDom = require("react-dom");
 var _reactDomDefault = parcelHelpers.interopDefault(_reactDom);
 var _mainView = require("./components/main-view/main-view");
-var _mainViewDefault = parcelHelpers.interopDefault(_mainView);
 // Import statement to indicate that you need to bundle `./index.scss`
 var _indexScss = require("./index.scss");
 // Main component (will eventually use all the others)
 class MyFlixApplication extends _reactDefault.default.Component {
     render() {
-        return(/*#__PURE__*/ _reactDefault.default.createElement(_mainViewDefault.default, {
+        return(/*#__PURE__*/ _reactDefault.default.createElement(_mainView.MainView, {
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\index.jsx",
                 lineNumber: 12
@@ -22006,8 +22005,12 @@ helpers.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "MainView", ()=>MainView
+);
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
+var _movieCard = require("../movie-card/movie-card");
+var _movieView = require("../movie-view/movie-view");
 class MainView extends _reactDefault.default.Component {
     constructor(){
         super();
@@ -22016,54 +22019,253 @@ class MainView extends _reactDefault.default.Component {
                 {
                     _id: 1,
                     Title: 'Inception',
-                    Description: 'desc1...',
-                    ImagePath: '...'
+                    Description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
+                    ImagePath: 'https://www.imdb.com/title/tt1375666/mediaviewer/rm3426651392/',
+                    Genre: 'Thriller',
+                    Director: 'Christopher Nolan'
                 },
                 {
                     _id: 2,
                     Title: 'The Shawshank Redemption',
-                    Description: 'desc2...',
-                    ImagePath: '...'
+                    Description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
+                    ImagePath: 'https://www.imdb.com/title/tt0111161/mediaviewer/rm10105600/',
+                    Genre: 'Thriller',
+                    Director: 'Frank Darabont'
                 },
                 {
                     _id: 3,
                     Title: 'Gladiator',
-                    Description: 'desc3...',
-                    ImagePath: '...'
+                    Description: 'A former Roman General sets out to exact vengeance against the corrupt emperor who murdered his family and sent him into slavery.',
+                    ImagePath: 'https://www.imdb.com/title/tt0172495/mediaviewer/rm2442542592/',
+                    Genre: 'Action',
+                    Director: 'Ridley Scott'
                 }
-            ]
+            ],
+            selectedMovie: null
         };
     }
+    setSelectedMovie(newSelectedMovie) {
+        this.setState({
+            selectedMovie: newSelectedMovie
+        });
+    }
     render() {
-        const movies = this.state.movies;
+        const { movies , selectedMovie  } = this.state// This is an example of object destruction
+        ;
         if (movies.length === 0) return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
             className: "main-view",
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                lineNumber: 19
+                lineNumber: 28
             },
             __self: this
-        }, "The list is empty!"));
-        else return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+        }, "The list is empty"));
+        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
             className: "main-view",
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 31
+            },
+            __self: this
+        }, selectedMovie ? /*#__PURE__*/ _reactDefault.default.createElement(_movieView.MovieView, {
+            movie: selectedMovie,
+            onBackClick: (newSelectedMovie)=>{
+                this.setSelectedMovie(newSelectedMovie);
+            },
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 33
+            },
+            __self: this
+        }) : movies.map((movie)=>/*#__PURE__*/ _reactDefault.default.createElement(_movieCard.MovieCard, {
+                key: movie._id,
+                movieData: movie,
+                onMovieClick: (movie1)=>{
+                    this.setSelectedMovie(movie1);
+                },
+                __source: {
+                    fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                    lineNumber: 35
+                },
+                __self: this
+            })
+        )));
+    }
+}
+
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"3b2NM","@parcel/transformer-js/src/esmodule-helpers.js":"39q1L","../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"41CjM","../movie-card/movie-card":"5OBqB","../movie-view/movie-view":"6OPHS"}],"5OBqB":[function(require,module,exports) {
+var helpers = require("../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "MovieCard", ()=>MovieCard
+);
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+class MovieCard extends _reactDefault.default.Component {
+    render() {
+        const { movieData , onMovieClick  } = this.props;
+        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-card",
+            onClick: ()=>{
+                onMovieClick(movieData);
+            },
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-card\\movie-card.jsx",
+                lineNumber: 6
+            },
+            __self: this
+        }, movieData.Title));
+    }
+}
+
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"3b2NM","@parcel/transformer-js/src/esmodule-helpers.js":"39q1L","../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"41CjM"}],"6OPHS":[function(require,module,exports) {
+var helpers = require("../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "MovieView", ()=>MovieView
+);
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+class MovieView extends _reactDefault.default.Component {
+    render() {
+        const { movie , onBackClick  } = this.props;
+        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-view",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 8
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-poster",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 9
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("img", {
+            src: movie.ImagePath,
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 10
+            },
+            __self: this
+        })), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-title",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 12
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "label",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 13
+            },
+            __self: this
+        }, "Title: "), /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "value",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 14
+            },
+            __self: this
+        }, movie.Title)), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-description",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 16
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "label",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 17
+            },
+            __self: this
+        }, "Description: "), /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "value",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 18
+            },
+            __self: this
+        }, movie.Description)), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-genere",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 20
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "label",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 21
+            },
+            __self: this
+        }, "Genre: "), /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "value",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
                 lineNumber: 22
             },
             __self: this
-        }, movies.map((movie)=>{
-            return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
-                key: movie._id,
-                __source: {
-                    fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
-                    lineNumber: 24
-                },
-                __self: this
-            }, movie.Title));
-        })));
+        }, movie.Genre)), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "movie-director",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 24
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "label",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 25
+            },
+            __self: this
+        }, "Director: "), /*#__PURE__*/ _reactDefault.default.createElement("span", {
+            className: "value",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 26
+            },
+            __self: this
+        }, movie.Director)), /*#__PURE__*/ _reactDefault.default.createElement("button", {
+            onClick: ()=>{
+                onBackClick(null);
+            },
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\movie-view\\movie-view.jsx",
+                lineNumber: 28
+            },
+            __self: this
+        }, "Back")));
     }
 }
-exports.default = MainView;
 
   helpers.postlude(module);
 } finally {
