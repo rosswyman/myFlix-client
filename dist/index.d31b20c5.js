@@ -870,25 +870,23 @@ var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _reactDom = require("react-dom");
 var _reactDomDefault = parcelHelpers.interopDefault(_reactDom);
+var _mainView = require("./components/main-view/main-view");
+var _mainViewDefault = parcelHelpers.interopDefault(_mainView);
 // Import statement to indicate that you need to bundle `./index.scss`
 var _indexScss = require("./index.scss");
 // Main component (will eventually use all the others)
 class MyFlixApplication extends _reactDefault.default.Component {
     render() {
-        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
-            className: "my-flix",
+        return(// <div className="my-flix">
+        //   <div>Good morning</div>
+        // </div>
+        /*#__PURE__*/ _reactDefault.default.createElement(_mainViewDefault.default, {
             __source: {
                 fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\index.jsx",
-                lineNumber: 11
+                lineNumber: 15
             },
             __self: this
-        }, /*#__PURE__*/ _reactDefault.default.createElement("div", {
-            __source: {
-                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\index.jsx",
-                lineNumber: 12
-            },
-            __self: this
-        }, "Good morning")));
+        }));
     }
 }
 // Finds the root of your app
@@ -901,7 +899,7 @@ _reactDomDefault.default.render(/*#__PURE__*/ _reactDefault.default.createElemen
   window.$RefreshReg$ = prevRefreshReg;
   window.$RefreshSig$ = prevRefreshSig;
 }
-},{"react":"3b2NM","react-dom":"2sg1U","./index.scss":"6IAuS","@parcel/transformer-js/src/esmodule-helpers.js":"39q1L","../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"41CjM"}],"3b2NM":[function(require,module,exports) {
+},{"react":"3b2NM","react-dom":"2sg1U","./index.scss":"6IAuS","@parcel/transformer-js/src/esmodule-helpers.js":"39q1L","../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"41CjM","./components/main-view/main-view":"1RdaW"}],"3b2NM":[function(require,module,exports) {
 'use strict';
 module.exports = require('./cjs/react.development.js');
 
@@ -22002,6 +22000,54 @@ function registerExportsForReactRefresh(module) {
     }
 }
 
-},{"react-refresh/runtime":"1YdZD"}]},["1j6wU","M4PK6","6L3h3"], "6L3h3", "parcelRequire279c")
+},{"react-refresh/runtime":"1YdZD"}],"1RdaW":[function(require,module,exports) {
+var helpers = require("../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js");
+var prevRefreshReg = window.$RefreshReg$;
+var prevRefreshSig = window.$RefreshSig$;
+helpers.prelude(module);
+
+try {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+var _react = require("react");
+var _reactDefault = parcelHelpers.interopDefault(_react);
+class MainView extends _reactDefault.default.Component {
+    render() {
+        return(/*#__PURE__*/ _reactDefault.default.createElement("div", {
+            className: "main-view",
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 6
+            },
+            __self: this
+        }, /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 7
+            },
+            __self: this
+        }, "Inception"), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 8
+            },
+            __self: this
+        }, "The Shawshank Redemption"), /*#__PURE__*/ _reactDefault.default.createElement("div", {
+            __source: {
+                fileName: "C:\\Users\\Ross Wyman\\documents\\career foundry\\myFlix-client\\src\\components\\main-view\\main-view.jsx",
+                lineNumber: 9
+            },
+            __self: this
+        }, "Gladiator")));
+    }
+}
+exports.default = MainView;
+
+  helpers.postlude(module);
+} finally {
+  window.$RefreshReg$ = prevRefreshReg;
+  window.$RefreshSig$ = prevRefreshSig;
+}
+},{"react":"3b2NM","@parcel/transformer-js/src/esmodule-helpers.js":"39q1L","../../../../../../../../nvm/v16.1.0/node_modules/parcel/node_modules/@parcel/transformer-react-refresh-wrap/lib/helpers/helpers.js":"41CjM"}]},["1j6wU","M4PK6","6L3h3"], "6L3h3", "parcelRequire279c")
 
 //# sourceMappingURL=index.d31b20c5.js.map
