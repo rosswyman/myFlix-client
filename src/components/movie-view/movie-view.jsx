@@ -3,7 +3,9 @@ import React from 'react';
 export class MovieView extends React.Component{
   render(){
     const{ movie }=this.props;
-    return <div className="movie-view">
+    
+    return (
+    <div className="movie-view">
       <div className="movie-poster">
         <img src={movie.ImagePath} />
       </div>
@@ -23,6 +25,8 @@ export class MovieView extends React.Component{
         <span className="label">Director: </span>
         <span className="value">{movie.Director}</span>
       </div> */}
+       <button>Back</button>
     </div>
-  }
+    );  
+}
 }
