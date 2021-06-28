@@ -1,4 +1,5 @@
 import React from 'react';
+import { MovieCard } from '../movie-card/movie-card';
 
 export default class MainView extends React.Component{
 
@@ -20,7 +21,7 @@ export default class MainView extends React.Component{
 
     return(
       <div className="main-view">
-        {movies.map(movie=><div key={movie._id}>{movie.Title}</div>)}
+        {movies.map(movie => <MovieCard key={movie._id} movieData={movie}/>)}
       </div>
     );
   }
