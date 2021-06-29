@@ -7,3 +7,5 @@ Dependencies:
 REACT
 REACT-DOM
 Parcel (TBC)
+Axios
+prop-types
