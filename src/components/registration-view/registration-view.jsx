@@ -3,15 +3,15 @@ import React, { useState } from 'react';
 export function RegistrationView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
-  const [ email, setPassword ] = useState('');
-  const [ birthday, setPassword ] = useState('');
+  const [ email, setEmail ] = useState('');
+  const [ birthday, setBirthday ] = useState('');
 
   const handleSubmit = () => {
     // e.preventDefault();
     console.log(username, password, email, birthday);
     /* Send a request to the server for authentication */
     /* then call props.onLoggedIn(username) */
-    props.onLoggedIn(username);
+    props.onRegistered(username);
   };
 
   return (
