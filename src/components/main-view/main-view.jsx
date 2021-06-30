@@ -45,18 +45,27 @@ export class MainView extends React.Component{
       });
     }
 
+    //  When a user successfully registers
+     onRegistered(newUser){
+      this.setState({
+        newUser
+      });
+    }
+
 
   render(){
+    
     const{movies, user, selectedMovie}=this.state // This is an example of object destruction
     
   //  If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-
     if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
     
-  // if({user}=newRegistration) return <RegistrationView />
+    // This line used for testing purposes
+    // if(!user) return <RegistrationView onRegistered={user => this.onRegistered(user)}/>;
+      
     // Before the movies have been loaded
     if (movies.length===0) return <div className="main-view" />;
-
+ 
     return (
     <div className="main-view">
       {/*If the state of `selectedMovie` is not null, that selected movie will be returned otherwise, all *movies will be returned*/}
