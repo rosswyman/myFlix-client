@@ -12,6 +12,12 @@ export function LoginView(props) {
     props.onLoggedIn(username);
   };
 
+  const handleNewUser = () => {
+    // If the button to register a new user is clicked, unload LoginView and load RegistrationView
+    console.log('requested new user'); 
+       
+  };
+
   return (
     <form>
       <h1>User Login</h1>
@@ -27,6 +33,8 @@ export function LoginView(props) {
       <br />
       {/* <button type="submit" onClick={handleSubmit}>Submit</button> 2021_0630 disabled along with e.preventDefault() above*/}
       <button type="button" onClick={handleSubmit}>Submit</button>
+      <br />
+      <button type="button" onClick={handleNewUser}>Register New User</button>
     </form>
   );
 }
