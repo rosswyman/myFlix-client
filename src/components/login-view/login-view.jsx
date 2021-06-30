@@ -12,11 +12,12 @@ export function LoginView(props) {
     props.onLoggedIn(username);
   };
 
-  const handleNewUser = () => {
-    // If the button to register a new user is clicked, unload LoginView and load RegistrationView
-    console.log('requested new user'); 
-       
-  };
+  // For future development when needing it register new user
+  // const handleNewUser = () => {
+  //   // If the button to register a new user is clicked, unload LoginView and load RegistrationView
+  //   console.log('requested new user'); 
+  //   return <RegistrationView onRegistered={user => this.onRegistered(user)} />
+  // };
 
   return (
     <form>
