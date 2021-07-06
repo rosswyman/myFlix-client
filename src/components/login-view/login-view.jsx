@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
 export function LoginView(props) {
   const [ username, setUsername ] = useState('');
@@ -7,8 +9,7 @@ export function LoginView(props) {
   const handleSubmit = () => {
     // e.preventDefault(); // 2021_0630: disabled this line because it was throwing error "VM172:21 Uncaught ReferenceError: e is not defined"
     console.log(username, password);
-    /* Send a request to the server for authentication */
-    /* then call props.onLoggedIn(username) */
+    // Send a request to the server for authentication, then call props.onLoggedIn(username)
     props.onLoggedIn(username);
   };
 
@@ -20,22 +21,20 @@ export function LoginView(props) {
   // };
 
   return (
-    <form>
-      <h1>User Login</h1>
-      <label>
-        Username:
-        <input type="text" value={username} onChange={e => setUsername(e.target.value)} />
-      </label>
-      <br />
-      <label>
-        Password:
-        <input type="password" value={password} onChange={e => setPassword(e.target.value)} />
-      </label>
-      <br />
-      {/* <button type="submit" onClick={handleSubmit}>Submit</button> 2021_0630 disabled along with e.preventDefault() above*/}
-      <button type="button" onClick={handleSubmit}>Submit</button>
-      <br />
-      <button type="button" onClick={handleNewUser}>Register New User</button>
-    </form>
+    <Form>
+      <Form.Group controlId="formUsername">
+        <Form.Label>Username:</Form.Label>
+        <Form.Control type="text" onChange={e => setUsername(e.target.value)} />
+      </Form.Group>
+
+      <Form.Group controlId="formPassword">
+        <Form.Label>Password:</Form.Label>
+        <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
+      </Form.Group>
+
+      <Button variant="primary" type="submit" onClick={handleSubmit}>
+        Submit
+      </Button>
+    </Form>
   );
 }
