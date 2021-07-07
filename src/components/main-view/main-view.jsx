@@ -76,13 +76,13 @@ export class MainView extends React.Component{
       <Row className="main-view justify-content-md-center">
         {selectedMovie
           ? (
-            <Col md={8}>
+            <Col>
               <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
             </Col>
           )
           : movies.map(movie => (
             
-            <Col md={3}>
+            <Col sm={6} md={3}> 
               <MovieCard key={movie._id} movieData={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }}/>
             </Col>
             
