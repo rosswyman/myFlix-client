@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 
+import './main-view.scss';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
@@ -70,6 +72,7 @@ export class MainView extends React.Component{
     if (movies.length===0) return <div className="main-view" />;
  
     return (
+      
       <Row className="main-view justify-content-md-center">
         {selectedMovie
           ? (
@@ -78,9 +81,11 @@ export class MainView extends React.Component{
             </Col>
           )
           : movies.map(movie => (
+            
             <Col md={3}>
               <MovieCard key={movie._id} movieData={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }}/>
             </Col>
+            
           ))
         }
       </Row>
