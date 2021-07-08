@@ -52,7 +52,7 @@ export class MainView extends React.Component{
     });
   }
 
-  /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` *property to that movie*/
+  /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` property to that movie*/
 
   setSelectedMovie(movie){
     this.setState({
@@ -157,7 +157,7 @@ export class MainView extends React.Component{
 
           <Route path="/movies/:movieId" render={({ match }) => {
             return <Col md={8}>
-              <MovieView movie={movies.find(m => m._id === match.params.movieId)} />
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
             </Col>
           }} />
           
