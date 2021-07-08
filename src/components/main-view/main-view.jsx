@@ -24,16 +24,26 @@ export class MainView extends React.Component{
     };
   }
 
-  componentDidMount(){
-    axios.get('https://movieboom.herokuapp.com/movies')
-    .then(response=>{
+  // componentDidMount(){
+  //   axios.get('https://movieboom.herokuapp.com/movies')
+  //   .then(response=>{
+  //     this.setState({
+  //       movies: response.data
+  //     });
+  //   })
+  //   .catch(error => {
+  //     console.log(error);
+  //   });
+  // }
+
+  componentDidMount() {
+    let accessToken = localStorage.getItem('token');
+    if (accessToken !== null) {
       this.setState({
-        movies: response.data
+        user: localStorage.getItem('user')
       });
-    })
-    .catch(error => {
-      console.log(error);
-    });
+      this.getMovies(accessToken);
+    }
   }
   
   getMovies(token) {
