@@ -3,7 +3,7 @@ import axios from 'axios';
 
 import './main-view.scss';
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -160,6 +160,7 @@ export class MainView extends React.Component{
             }} />
             
             <Route path="/register" render={() => {
+              if (user) return <Redirect to="/" />
               return <Col>
               <RegistrationView />
             </Col>
