@@ -93,18 +93,12 @@ export class MainView extends React.Component{
     
     const{movies, user, selectedMovie}=this.state // This is an example of object destruction
     
-  //  If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-    if(!user) return <Row>
-      <Col>
-        <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
-      </Col>
-    </Row>
+  
     
     // This line used for testing purposes
     // if(!user) return <RegistrationView onRegistered={user => this.onRegistered(user)}/>;
       
-    // Before the movies have been loaded
-    if (movies.length===0) return <div className="main-view" />;
+    
  
     return (
       <div className="main-view-all">
@@ -145,38 +139,54 @@ export class MainView extends React.Component{
         {/* End code working 2021_0708 1022 */}
       
         <Router>
-        <Row className="main-view justify-content-md-center">
-          
-          <Route exact path="/" render={() => {
-            return movies.map(m => (
-              <Col md={3} key={m._id}>
-                <MovieCard movieData={m} />
+          <Row className="main-view justify-content-md-center">
+
+            <Route exact path="/" render={() => {
+              
+
+              //  If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
+              if (!user) return <Col>
+                <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
               </Col>
-            ))
-          }} />
 
-<Route path="/movies/:movieId" render={({ match, history }) => {
-  return <Col md={8}>
-    <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
-  </Col>
-}} />
-          
-          <Route path="/genres/:name" render={({ match }) => {
-            if (movies.length === 0) return <div className="main-view" />;
-            return <Col md={8}>
-              <MovieView movie={movies.find(m => m._id === match.params.genre)} />
+              // Before the movies have been loaded
+              if (movies.length===0) return <div className="main-view" />;
+
+              return movies.map(m => (
+                <Col md={3} key={m._id}>
+                  <MovieCard movieData={m} />
+                </Col>
+              ))
+            }} />
+            
+            <Route path="/register" render={() => {
+              return <Col>
+              <RegistrationView />
             </Col>
-          }} />
+            }} />
 
-          <Route path="/directors/:name" render={({ match }) => {
-            if (movies.length === 0) return <div className="main-view" />;
-            return <Col md={8}>
-              <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} />
+            <Route path="/movies/:movieId" render={({ match, history }) => {
+              return <Col md={8}>
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} onBackClick={() => history.goBack()} />
+              </Col>
+            }} />   
+
+            <Route path="/genres/:name" render={({ match }) => {
+              if (movies.length === 0) return <div className="main-view" />;
+              return <Col md={8}>
+                <MovieView movie={movies.find(m => m._id === match.params.genre)} />
             </Col>
-}
-} />
+            }} />
 
-        </Row>
+            <Route path="/directors/:name" render={({ match }) => {
+              if (movies.length === 0) return <div className="main-view" />;
+              return <Col md={8}>
+                <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} />
+            </Col>
+            }
+            } />
+
+          </Row>
       </Router>
 
       </div>
