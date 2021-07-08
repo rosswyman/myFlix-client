@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -6,11 +8,23 @@ export function LoginView(props) {
   const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState('');
 
-  const handleSubmit = () => {
-    // e.preventDefault(); // 2021_0630: disabled this line because it was throwing error "VM172:21 Uncaught ReferenceError: e is not defined"
-    console.log(username, password);
-    // Send a request to the server for authentication, then call props.onLoggedIn(username)
-    props.onLoggedIn(username);
+  const handleSubmit = (e) => {
+    console.log('it is making it this far')
+    console.log(username);
+    console.log(password);
+    e.preventDefault();
+    /* Send a request to the server for authentication */
+    axios.post('https://movieboom.herokuapp.com/login', {
+      Username: username,
+      Password: password
+    })
+    .then(response => {
+      const data = response.data;
+      props.onLoggedIn(data);
+    })
+    .catch(e => {
+      console.log('no such user')
+    });
   };
 
   // For future development when needing it register new user
