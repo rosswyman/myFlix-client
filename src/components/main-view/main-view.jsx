@@ -24,18 +24,7 @@ export class MainView extends React.Component{
     };
   }
 
-  // componentDidMount(){
-  //   axios.get('https://movieboom.herokuapp.com/movies')
-  //   .then(response=>{
-  //     this.setState({
-  //       movies: response.data
-  //     });
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   });
-  // }
-
+  
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
     if (accessToken !== null) {
@@ -82,6 +71,14 @@ export class MainView extends React.Component{
     this.getMovies(authData.token);
   }
 
+  onLoggedOut() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    this.setState({
+      user: null
+    });
+  }
+
     //  When a user successfully registers
      onRegistered(newUser){
       this.setState({
@@ -112,9 +109,9 @@ export class MainView extends React.Component{
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="nav-items">
-                <Nav.Link href="PLACEHOLDER">Movies</Nav.Link>
+                <Nav.Link href="/">Movies</Nav.Link>
                 <Nav.Link href="#PLACEHOLDER">Account</Nav.Link>
-                <Nav.Link href="#PLACEHOLDER">Log Out</Nav.Link>     
+                <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
               </Nav>
             </Navbar.Collapse>
           </Navbar>
