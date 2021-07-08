@@ -10,8 +10,26 @@ export function RegistrationView(props) {
   const [ birthday, setBirthday ] = useState('');
 
   const handleSubmit = () => {
-        console.log(username, password, email, birthday);
-      };
+    console.log(username);
+    console.log(password);
+    console.log(email);
+    console.log(birthday);
+
+    axios.post('https://movieboom.herokuapp.com/users', {
+      Username: username,
+      Password: password,
+      Email: email,
+      Birthday: birthday
+    })
+    .then(response => {
+      const data = response.data;
+      console.log(data);
+      window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+    })
+    .catch(e => {
+      console.log('error registering the user')
+    });
+  };
 
   return (
 
@@ -38,7 +56,7 @@ export function RegistrationView(props) {
       
       <div className="text-center">
         <Button variant="primary" type="submit" onClick={handleSubmit}>
-          Submit
+          Register
         </Button>
       </div>
       
