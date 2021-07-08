@@ -3,6 +3,8 @@ import axios from 'axios';
 
 import './main-view.scss';
 
+import { BrowserRouter as Router, Route } from "react-router-dom";
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {Navbar,Nav,Form,FormControl} from 'react-bootstrap';
@@ -92,7 +94,11 @@ export class MainView extends React.Component{
     const{movies, user, selectedMovie}=this.state // This is an example of object destruction
     
   //  If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
-    if(!user) return <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
+    if(!user) return <Row>
+      <Col>
+        <LoginView onLoggedIn={user => this.onLoggedIn(user)}/>;
+      </Col>
+    </Row>
     
     // This line used for testing purposes
     // if(!user) return <RegistrationView onRegistered={user => this.onRegistered(user)}/>;
@@ -103,6 +109,7 @@ export class MainView extends React.Component{
     return (
       <div className="main-view-all">
 
+        {/* Begin code for navbar */}
         <header>
           <Navbar bg="light" collapseOnSelect fixed='top' expand="lg" variant="light">
             <Navbar.Brand href="PLACEHOLDER" >myFlix</Navbar.Brand>
@@ -116,8 +123,10 @@ export class MainView extends React.Component{
             </Navbar.Collapse>
           </Navbar>
         </header>
+        {/* End code for navbar */}
 
-        <Row className="main-view justify-content-md-center">
+        {/* Begin code working 2021_0708 1022 */}
+        {/* <Row className="main-view justify-content-md-center">
           {selectedMovie
             ? (
               <Col>
@@ -132,7 +141,44 @@ export class MainView extends React.Component{
               
             ))
           }
+        </Row> */}
+        {/* End code working 2021_0708 1022 */}
+      
+        <Router>
+        <Row className="main-view justify-content-md-center">
+          
+          <Route exact path="/" render={() => {
+            return movies.map(m => (
+              <Col md={3} key={m._id}>
+                <MovieCard movieData={m} />
+              </Col>
+            ))
+          }} />
+
+          <Route path="/movies/:movieId" render={({ match }) => {
+            return <Col md={8}>
+              <MovieView movie={movies.find(m => m._id === match.params.movieId)} />
+            </Col>
+          }} />
+          
+          <Route path="/genres/:name" render={({ match }) => {
+            if (movies.length === 0) return <div className="main-view" />;
+            return <Col md={8}>
+              <MovieView movie={movies.find(m => m._id === match.params.genre)} />
+            </Col>
+          }} />
+
+          <Route path="/directors/:name" render={({ match }) => {
+            if (movies.length === 0) return <div className="main-view" />;
+            return <Col md={8}>
+              <DirectorView director={movies.find(m => m.Director.Name === match.params.name).Director} />
+            </Col>
+}
+} />
+
         </Row>
+      </Router>
+
       </div>
     );
   
