@@ -9,6 +9,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {Navbar,Nav,Form,FormControl} from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
+import { Link } from "react-router-dom";
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
@@ -24,24 +25,20 @@ export class MainView extends React.Component{
     super();
     this.state={
       movies:[],
-      userList:[],
-
       selectedMovie: null,
-      user: null
+      user: null,
+      userObject: null      
     };
   }
-
   
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
-    let userToken=localStorage.getItem('user');
     if (accessToken !== null) {
       this.setState({
-        user: localStorage.getItem('user')
+        user: localStorage.getItem('user'),
+        userObject: localStorage.getItem('userObject'),
       });
-      this.getMovies(accessToken);
-      this.getUserList(accessToken);
-      
+      this.getMovies(accessToken);       
     }
   }
   
@@ -60,25 +57,6 @@ export class MainView extends React.Component{
     });
   }
 
-  getUserList(token) {
-    axios.get('https://movieboom.herokuapp.com/users', {
-      headers: { Authorization: `Bearer ${token}`}
-    })
-    .then(response => {
-      // Assign the result to the state
-      this.setState({
-        userList: response.data
-      });
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  
-
-  
-
   /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` property to that movie*/
 
   setSelectedMovie(movie){
@@ -90,15 +68,19 @@ export class MainView extends React.Component{
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
 
   onLoggedIn(authData) {
-    console.log(authData);
+    console.log('authData: '+authData);
+    console.log('authData.user: '+JSON.stringify(authData.user))
+
     this.setState({
-      user: authData.user.Username
-    });
+      user: authData.user.Username,
+      userObject: authData.user    
+    });    
   
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
-    this.getMovies(authData.token);
-    this.getUserList(authData.token);
+    localStorage.setItem('userObject', authData.user.Birthday); //I have assigned the birthday to userObject to see if I can pass it to ProfileView
+  
+    this.getMovies(authData.token);    
   }
 
   onLoggedOut() {
@@ -107,6 +89,7 @@ export class MainView extends React.Component{
     this.setState({
       user: null
     });
+    window.open('/', '_self');
   }
 
     //  When a user successfully registers
@@ -116,12 +99,13 @@ export class MainView extends React.Component{
       });
     }
 
-
+    
   render(){
     
-    const{movies, user, userList, selectedMovie}=this.state // This is an example of object destruction
-  
+    const{movies, user, userObject, selectedMovie}=this.state // This is an example of object destruction
+    
     return (
+      
       <div className="main-view-all">
 
         {/* Begin code for navbar */}
@@ -132,7 +116,8 @@ export class MainView extends React.Component{
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="nav-items">
                 <Nav.Link href="/">Movies</Nav.Link>
-                <Nav.Link href="/users/${user}">Account</Nav.Link>
+                <Nav.Link href={`/users/${user}`}>Account</Nav.Link>
+                
                 <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
               </Nav>
             </Navbar.Collapse>
@@ -210,9 +195,11 @@ export class MainView extends React.Component{
             }
             } />
 
-            <Route path="/users/${user}" render={({ match, history }) => {
+            <Route path={`/users/${user}`} render={({history }) => {
+              
               return <Col md={8}>
-              <ProfileView user={userList.find(u => u.Username === match.params.Username)} onBackClick={() => history.goBack()} />
+              <ProfileView user={userObject} onBackClick={() => history.goBack()} />
+              
               </Col>
             }} />    
 
