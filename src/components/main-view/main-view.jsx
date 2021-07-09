@@ -24,6 +24,8 @@ export class MainView extends React.Component{
     super();
     this.state={
       movies:[],
+      userList:[],
+
       selectedMovie: null,
       user: null
     };
@@ -32,12 +34,14 @@ export class MainView extends React.Component{
   
   componentDidMount() {
     let accessToken = localStorage.getItem('token');
+    let userToken=localStorage.getItem('user');
     if (accessToken !== null) {
       this.setState({
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
-      this.getUsers(accessToken);
+      this.getUserList(accessToken);
+      
     }
   }
   
@@ -56,20 +60,24 @@ export class MainView extends React.Component{
     });
   }
 
-  getUsers(token) {
+  getUserList(token) {
     axios.get('https://movieboom.herokuapp.com/users', {
       headers: { Authorization: `Bearer ${token}`}
     })
     .then(response => {
       // Assign the result to the state
       this.setState({
-        users: response.data
+        userList: response.data
       });
     })
     .catch(function (error) {
       console.log(error);
     });
   }
+
+  
+
+  
 
   /*When a movie is clicked, this function is invoked and updates the state of the `selectedMovie` property to that movie*/
 
@@ -90,7 +98,7 @@ export class MainView extends React.Component{
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
-    this.getUsers(authData.token);
+    this.getUserList(authData.token);
   }
 
   onLoggedOut() {
@@ -111,15 +119,8 @@ export class MainView extends React.Component{
 
   render(){
     
-    const{movies, user, selectedMovie}=this.state // This is an example of object destruction
-    
+    const{movies, user, userList, selectedMovie}=this.state // This is an example of object destruction
   
-    
-    // This line used for testing purposes
-    // if(!user) return <RegistrationView onRegistered={user => this.onRegistered(user)}/>;
-      
-    
- 
     return (
       <div className="main-view-all">
 
@@ -131,7 +132,7 @@ export class MainView extends React.Component{
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="nav-items">
                 <Nav.Link href="/">Movies</Nav.Link>
-                <Nav.Link href="#PLACEHOLDER">Account</Nav.Link>
+                <Nav.Link href="/users/${user}">Account</Nav.Link>
                 <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
               </Nav>
             </Navbar.Collapse>
@@ -195,7 +196,9 @@ export class MainView extends React.Component{
             <Route path="/genres/:name" render={({ match, history }) => {
               if (movies.length === 0) return <div className="main-view" />;
               return <Col md={8}>
-                <GenreView genre={movies.find(m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
+                <GenreView genre={movies.find(g => g.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} />
+                {/* <GenreView movies={movies.filter( m => m.Genre.Name === match.params.name).Genre} onBackClick={() => history.goBack()} /> */}
+
             </Col>
             }} />
 
@@ -207,13 +210,11 @@ export class MainView extends React.Component{
             }
             } />
 
-            <Route path="/users/:name" render={({ match, history }) => {
-              if (user.length === 0) return <div className="main-view" />;
+            <Route path="/users/${user}" render={({ match, history }) => {
               return <Col md={8}>
-                <ProfileView user={users.find(u => u.Username === match.params.username)} onBackClick={() => history.goBack()} />
-            </Col>
-            }
-            } />  
+              <ProfileView user={userList.find(u => u.Username === match.params.Username)} onBackClick={() => history.goBack()} />
+              </Col>
+            }} />    
 
           </Row>
       </Router>
