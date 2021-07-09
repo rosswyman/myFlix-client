@@ -13,13 +13,18 @@ export class ProfileView extends React.Component{
 
   render(){
     const{ user, onBackClick }=this.props;
-    
+    console.log('profile-view has been called')
+    // console.log(user)
+    // console.log(JSON.stringify(user))
+    // console.log(JSON.parse(user))
+   
     return (
       <Row className="profile-view justify-content-md-center">
         <Col md={8}>
           <div className="user-username">
             <span className="label">Username: </span>
-            <span className="value">{user.Username}</span>
+            {/* <span className="value">{user.Username}</span> */}
+            <span className="value">{user}</span>
           </div>
           <div className="user-password">
             <span className="label">Current Password: </span>
