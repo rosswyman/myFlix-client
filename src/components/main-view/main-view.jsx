@@ -15,6 +15,8 @@ import { RegistrationView } from '../registration-view/registration-view';
 import { MovieCard } from '../movie-card/movie-card';
 import { MovieView } from '../movie-view/movie-view';
 import { DirectorView } from '../director-view/director-view';
+import { GenreView } from '../genre-view/genre-view';
+import { ProfileView } from '../profile-view/profile-view';
 
 export class MainView extends React.Component{
 
@@ -35,6 +37,7 @@ export class MainView extends React.Component{
         user: localStorage.getItem('user')
       });
       this.getMovies(accessToken);
+      this.getUsers(accessToken);
     }
   }
   
@@ -46,6 +49,21 @@ export class MainView extends React.Component{
       // Assign the result to the state
       this.setState({
         movies: response.data
+      });
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+
+  getUsers(token) {
+    axios.get('https://movieboom.herokuapp.com/users', {
+      headers: { Authorization: `Bearer ${token}`}
+    })
+    .then(response => {
+      // Assign the result to the state
+      this.setState({
+        users: response.data
       });
     })
     .catch(function (error) {
@@ -72,6 +90,7 @@ export class MainView extends React.Component{
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
     this.getMovies(authData.token);
+    this.getUsers(authData.token);
   }
 
   onLoggedOut() {
@@ -187,6 +206,14 @@ export class MainView extends React.Component{
             </Col>
             }
             } />
+
+            <Route path="/users/:name" render={({ match, history }) => {
+              if (user.length === 0) return <div className="main-view" />;
+              return <Col md={8}>
+                <ProfileView user={users.find(u => u.Username === match.params.username)} onBackClick={() => history.goBack()} />
+            </Col>
+            }
+            } />  
 
           </Row>
       </Router>
