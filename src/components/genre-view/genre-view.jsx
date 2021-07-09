@@ -5,11 +5,15 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import './genre-view.scss';
 
+import { MovieCard } from '../movie-card/movie-card';
+
 export class GenreView extends React.Component{
  
 
   render(){
-    const{ genre, onBackClick }=this.props;
+    const{ genre, movies, onBackClick }=this.props;
+    
+  
     
     return (
       <Row className="genre-view justify-content-md-center">
@@ -19,6 +23,9 @@ export class GenreView extends React.Component{
           </div>
           <div className="genre-description">
             <span>{genre.Description}</span>
+          </div>
+          <div>
+        
           </div>
           <div className="text-center">
           <Button onClick={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
