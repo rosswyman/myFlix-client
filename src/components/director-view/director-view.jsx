@@ -10,6 +10,7 @@ export class DirectorView extends React.Component{
 
   render(){
     const{ director, onBackClick }=this.props;
+    console.log({director})
     
     return (
       <Row className="director-view justify-content-md-center">

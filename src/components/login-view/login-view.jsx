@@ -9,7 +9,7 @@ export function LoginView(props) {
   const [ password, setPassword ] = useState('');
 
   const handleSubmit = (e) => {
-    console.log('it is making it this far')
+    console.log('login-view handleSubmit has executed')
     console.log(username);
     console.log(password);
     e.preventDefault();
@@ -28,12 +28,6 @@ export function LoginView(props) {
     });
   };
 
-  // For future development when needing it register new user
-  // const handleNewUser = () => {
-  //   // If the button to register a new user is clicked, unload LoginView and load RegistrationView
-  //   console.log('requested new user'); 
-  //   return <RegistrationView onRegistered={user => this.onRegistered(user)} />
-  // };
 
   return (
     <Form>
