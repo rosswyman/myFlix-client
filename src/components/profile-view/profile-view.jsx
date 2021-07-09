@@ -15,7 +15,7 @@ export class ProfileView extends React.Component{
     const{ user, onBackClick }=this.props;
     
     return (
-      <Row className="user-view justify-content-md-center">
+      <Row className="profile-view justify-content-md-center">
         <Col md={8}>
           <div className="user-username">
             <span className="label">Username: </span>
