@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 
@@ -9,11 +10,12 @@ export function RegistrationView(props) {
   const [ email, setEmail ] = useState('');
   const [ birthday, setBirthday ] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
     console.log(username);
     console.log(password);
     console.log(email);
     console.log(birthday);
+    e.preventDefault();
 
     axios.post('https://movieboom.herokuapp.com/users', {
       Username: username,
@@ -25,6 +27,7 @@ export function RegistrationView(props) {
       const data = response.data;
       console.log(data);
       window.open('/', '_self'); // the second argument '_self' is necessary so that the page will open in the current tab
+      alert("You have sucessfully registered.")
     })
     .catch(e => {
       console.log('error registering the user')
