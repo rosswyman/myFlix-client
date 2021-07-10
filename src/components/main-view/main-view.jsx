@@ -27,7 +27,7 @@ export class MainView extends React.Component{
       movies:[],
       selectedMovie: null,
       user: null,
-      userObject: null      
+   
     };
   }
   
@@ -36,7 +36,7 @@ export class MainView extends React.Component{
     if (accessToken !== null) {
       this.setState({
         user: localStorage.getItem('user'),
-        userObject: localStorage.getItem('userObject'),
+ 
       });
       this.getMovies(accessToken);       
     }
@@ -68,18 +68,16 @@ export class MainView extends React.Component{
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
 
   onLoggedIn(authData) {
-    console.log('authData: '+authData);
-    console.log('authData.user: '+JSON.stringify(authData.user))
+ 
 
     this.setState({
       user: authData.user.Username,
-      userObject: authData.user    
+    
     });    
   
     localStorage.setItem('token', authData.token);
     localStorage.setItem('user', authData.user.Username);
-    localStorage.setItem('userObject', authData.user.Birthday); //I have assigned the birthday to userObject to see if I can pass it to ProfileView
-  
+   
     this.getMovies(authData.token);    
   }
 
@@ -102,7 +100,7 @@ export class MainView extends React.Component{
     
   render(){
     
-    const{movies, user, userObject, selectedMovie}=this.state // This is an example of object destruction
+    const{movies, user, selectedMovie}=this.state // This is an example of object destruction
     
     return (
       
@@ -198,7 +196,7 @@ export class MainView extends React.Component{
             <Route path={`/users/${user}`} render={({history }) => {
               
               return <Col md={8}>
-              <ProfileView user={userObject} onBackClick={() => history.goBack()} />
+              <ProfileView onBackClick={() => history.goBack()} />
               
               </Col>
             }} />    
