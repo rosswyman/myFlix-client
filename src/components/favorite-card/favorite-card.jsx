@@ -11,26 +11,30 @@ import { Link } from "react-router-dom";
 export class FavoriteCard extends React.Component {
   
 
-removeFavorite(movie) {
-  const token = localStorage.getItem("token");
-  const url =
-    "https://movieboom.herokuapp.com/users/" +
-    localStorage.getItem("user") +
-    "/movies/Remove/" +
-    movie._id;
-  axios
-    .post(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      console.log(response);
-      this.componentDidMount();
-        alert(movie.Title + " has been removed from your Favorites.");
-    });
-  }
-
- 
-
+  removeFavorite(movie) {
+    const token = localStorage.getItem("token");
+    const url =
+      "https://movieboom.herokuapp.com/users/" +
+      localStorage.getItem("user") +
+      "/movies/remove/" +
+      movie._id;
+      const config = {
+        method: 'post',
+        url: url,
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-type': 'application/json'
+        }
+      };
+      console.log(url)
+      axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    }
   
   render() {
     const { movieData, user } = this.props;
