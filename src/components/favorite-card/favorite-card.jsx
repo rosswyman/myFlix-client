@@ -10,31 +10,7 @@ import { Link } from "react-router-dom";
 
 export class FavoriteCard extends React.Component {
   
-
-  removeFavorite(movie) {
-    const token = localStorage.getItem("token");
-    const url =
-      "https://movieboom.herokuapp.com/users/" +
-      localStorage.getItem("user") +
-      "/movies/remove/" +
-      movie._id;
-      const config = {
-        method: 'post',
-        url: url,
-        headers: { 
-          'Authorization': `Bearer ${token}`,
-          'Content-type': 'application/json'
-        }
-      };
-      console.log(url)
-      axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-    }
+  
   
   render() {
     const { movieData, user } = this.props;
@@ -51,12 +27,7 @@ export class FavoriteCard extends React.Component {
               <Button variant="outline-info">Details</Button>
             </Link>
           </div>
-          <br></br>
-          <div className="text-center">
-            
-          <Button variant="outline-info" onClick={()=>this.removeFavorite(movieData)}>Remove from Favorites</Button>
-          
-          </div>           
+                   
         </Card.Body>
       </Card>
     
