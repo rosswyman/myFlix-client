@@ -47,21 +47,27 @@ export class ProfileView extends React.Component{
         });
 }
 
-removeFavorite(movie) {
-  const token = localStorage.getItem("token");
-  const url =
-    "https://movieboom.herokuapp.com/users/" +
-    localStorage.getItem("user") +
-    "/movies/remove/" +
-    movie._id;
+  updateUser(newUserData) {
+    const token = localStorage.getItem("token");
+    const url =
+      "https://movieboom.herokuapp.com/users/" +
+      localStorage.getItem("user");
     
-    const config = {
-      method: 'post',
+    var data = JSON.stringify({
+      "Username": "jackjack",
+      "Password": "boomboom2 ",
+      "Email": "incredible@gmail.com",
+      "Birthday": "6/9/1963"
+    });
+    
+    var config = {
+      method: 'put',
       url: url,
       headers: { 
-        'Authorization': `Bearer ${token}`,
-        'Content-type': 'application/json'
-      }
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      },
+      data : data
     };
     
     axios(config)
@@ -82,19 +88,23 @@ removeFavorite(movie) {
       return this.state.favoriteMovies.includes(movie._id);
     });
 
-    const newUsername = document.getElementById('formUsername');
-
-
-    function updateUser(token) {
-      }
+       
 
     if (loading) return '<div>Loading...</div>';
     return (
       <Row className="profile-view justify-content-md-center">       
         <Col>
           <div className="user-username">
-            <span className="label">Username: </span>
-            <span className="value">{username}</span>
+            <Row>
+              <Col xs={2}>
+              <span className="label">Username: </span>
+              </Col>
+              <Col>
+              <span className="value">{username}</span>
+              </Col>
+              
+              
+            </Row>            
           </div>
 
         {/* <div className="user-password">
@@ -103,26 +113,50 @@ removeFavorite(movie) {
         </div> */}
 
         <div className="user-email">
-          <span className="label">E-mail: </span>
-          <span className="value">{email}</span>
+          <Row>
+            <Col xs={2}>
+              <span className="label">E-mail: </span>
+            </Col>
+            <Col>
+              <span className="value">{email}</span>
+            </Col>              
+          </Row>          
         </div>
-
+        
         <div className="user-birthday">
-          <span className="label">Birthday: </span>
-          <span className="value">{birthday}</span>
+          <Row>
+            <Col xs={2}>
+              <span className="label">Birthday: </span>
+            </Col>
+            <Col>
+              <span className="value">{birthday}</span>
+            </Col>    
+              
+          </Row>
+          
         </div> 
 
         <div className="user-favorites">
-          <span className="label">Favorite Movies: </span>               
+          <Row>
+            <Col xs={3}>
+              <span className="label">Favorite Movies: </span>
+            </Col>
+            <Col>
+            </Col>
+          
+          </Row>
+          <Row>               
           {favoriteMovieList.map((m)=> {
             return <Col md={3} key={m._id}>              
           <FavoriteCard movieData={m} user={username} />
           </Col>
           })}
+          </Row>
+        
         </div>
 
         <div className="text-center">
-        <Button on  Click={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
+          <Button on  Click={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
         </div>
 
         <div>
