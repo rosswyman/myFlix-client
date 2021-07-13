@@ -50,25 +50,34 @@ export class ProfileView extends React.Component{
 removeFavorite(movie) {
   const token = localStorage.getItem("token");
   const url =
-    "https://movieboom.herokuapp.com/users" +
+    "https://movieboom.herokuapp.com/users/" +
     localStorage.getItem("user") +
-    "/movies/remove" +
+    "/movies/remove/" +
     movie._id;
-  axios
-    .delete(url, {
-      headers: { Authorization: `Bearer ${token}` },
+    
+    const config = {
+      method: 'post',
+      url: url,
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'Content-type': 'application/json'
+      }
+    };
+    
+    axios(config)
+    .then(function (response) {
+      console.log(JSON.stringify(response.data));
     })
-    .then((response) => {
-      console.log(response);
-      this.componentDidMount();
-
-      alert(movie.Title + " has been removed from your Favorites.");
+    .catch(function (error) {
+      console.log(error);
     });
   }
 
   render(){
     const{  movies, token, onBackClick }=this.props;
     const {loading, username, password, email, birthday, favoriteMovies} = this.state;
+    
+    // This takes the list of all movies and filters so that only those in the user favorites show up
     const favoriteMovieList = movies.filter((movie) => {
       return this.state.favoriteMovies.includes(movie._id);
     });
@@ -77,25 +86,6 @@ removeFavorite(movie) {
 
 
     function updateUser(token) {
-  
-      const url = "https://movieboom.herokuapp.com/users/" + localStorage.getItem("user");
-
-      axios
-        .put(url, 
-          {
-            Username: newUsername,
-            Password: password,
-            Email: email,
-            Birthdate: birthday
-          },
-          {
-          headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        })
-        .then((response) => {
-          console.log(response);
-          this.componentDidMount();
-            alert("User information has been updated");
-        });
       }
 
     if (loading) return '<div>Loading...</div>';
