@@ -11,23 +11,27 @@ import { Link } from "react-router-dom";
 
 export class MovieCard extends React.Component {
 
-addFavorite(movie) {
-  const token = localStorage.getItem("token");
-  const url =
-    "https://movieboom.herokuapp.com/users/" +
-    localStorage.getItem("user") +
-    "/movies/" +
-    movie._id;
-  axios
-    .post(url, {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-    .then((response) => {
-      console.log(response);
-      this.componentDidMount();
-        alert(movie.Title + " has been added to your Favorites.");
-    });
-  }
+  addFavorite(movie) {
+    const token = localStorage.getItem("token");
+    const url =
+      "https://movieboom.herokuapp.com/users/" +
+      localStorage.getItem("user") +
+      "/movies/" +
+      movie._id;
+      const config = {
+        method: 'post',
+        url: url,
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-type': 'application/json'
+        },
+      }
+      axios(config)
+      .then((response) => {
+        console.log(response);
+          alert(movie.Title + " has been added to your Favorites.");
+      });
+    }
 
   render() {
     const { movieData } = this.props;
@@ -44,9 +48,10 @@ addFavorite(movie) {
               <Button variant="outline-info">Details</Button>
             </Link>
           </div>
-          <div>
-          <Button variant="outline-info" onClick={()=>this.addFavorite(movieData)}>Add to Favorites</Button>
-              </div>          
+          <br></br>
+          <div className="text-center">       
+            <Button variant="outline-info" onClick={()=>this.addFavorite(movieData)}>Add to Favorites</Button>
+          </div>          
         </Card.Body>
       </Card>
     
