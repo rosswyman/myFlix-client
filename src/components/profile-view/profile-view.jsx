@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import './profile-view.scss'
-import { MovieCard } from '../movie-card/movie-card';
 import { FavoriteCard } from '../favorite-card/favorite-card';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -17,14 +16,59 @@ export class ProfileView extends React.Component{
       email: null,
       birthday: null,
       favoriteMovies: [],
-      loading: false
+      loading: false,
+      newUsername: null,
+      newPassword: null,
+      newEmail: null
     };
+
+    this.handleUsernameChange=this.handleUsernameChange.bind(this);
+    this.handlePasswordChange=this.handlePasswordChange.bind(this);
+    this.handleEmailChange=this.handleEmailChange.bind(this);
+    // this.handleBirthdayChange=this.handleBirthdayChange(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleUsernameChange(event){
+    this.setState({newUsername: event.target.value});
+  }
+
+  handlePasswordChange(event){
+    this.setState({newPassword: event.target.value});
+  }
+
+  handleEmailChange(event){
+    this.setState({newEmail: event.target.value});
+  }
+
+  // handleBirthdayChange(event){
+  //   this.setState({birthday: event.target.value});
+  // }
+
+  handleSubmit(event) {
+    
+    
+    console.log('Current username: ' + this.state.username);
+    console.log('Current password: ' + this.state.password);
+    console.log('Current email: ' + this.state.email);
+    console.log('Current birthday: ' + this.state.birthday);
+
+    console.log('New username: ' + this.state.newUsername);
+    console.log('New password: ' + this.state.newPassword);
+    console.log('New email: ' + this.state.newEmail);
+    // console.log('Current birthday: ' + this.state.birthday);
+    
+    event.preventDefault();
+  }
+
   
-}
+
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
     this.getUser(accessToken);
-}
+  }
+
+  
 
   getUser(token) {
     let url = 'https://movieboom.herokuapp.com/users/' +
@@ -45,50 +89,45 @@ export class ProfileView extends React.Component{
             });
             this.setState({loading: false})
         });
-}
+  }
 
-  updateUser(newUserData) {
+  removeFavorite(movie) {
     const token = localStorage.getItem("token");
     const url =
       "https://movieboom.herokuapp.com/users/" +
-      localStorage.getItem("user");
-    
-    var data = JSON.stringify({
-      "Username": "jackjack",
-      "Password": "boomboom2 ",
-      "Email": "incredible@gmail.com",
-      "Birthday": "6/9/1963"
-    });
-    
-    var config = {
-      method: 'put',
-      url: url,
-      headers: { 
-        'Authorization': `Bearer ${token}`, 
-        'Content-Type': 'application/json'
-      },
-      data : data
-    };
-    
-    axios(config)
-    .then(function (response) {
-      console.log(JSON.stringify(response.data));
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
+      localStorage.getItem("user") +
+      "/movies/remove/" +
+      movie._id;
+      const config = {
+        method: 'post',
+        url: url,
+        headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Content-type': 'application/json'
+        }
+      };
+      console.log(url)
+      axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        this.componentDidMount();      
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+   }
+  
   render(){
     const{  movies, token, onBackClick }=this.props;
-    const {loading, username, password, email, birthday, favoriteMovies} = this.state;
-    
+    const {loading, username, password, email, birthday} = this.state;
+     
+
     // This takes the list of all movies and filters so that only those in the user favorites show up
     const favoriteMovieList = movies.filter((movie) => {
       return this.state.favoriteMovies.includes(movie._id);
     });
 
-       
+   
 
     if (loading) return '<div>Loading...</div>';
     return (
@@ -149,43 +188,51 @@ export class ProfileView extends React.Component{
           {favoriteMovieList.map((m)=> {
             return <Col md={3} key={m._id}>              
           <FavoriteCard movieData={m} user={username} />
+          <div className="text-center">
+          <Button variant="outline-info" onClick={()=>this.removeFavorite(m)}>Remove from Favorites</Button>
+          </div>
           </Col>
           })}
           </Row>
         
         </div>
+        <Row>
+          <Col className="back-button-col">
+          <div className="text-center">
+            <Button on  Click={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
+          </div>
+          </Col>
+          
+        </Row>
+        
 
-        <div className="text-center">
-          <Button on  Click={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
-        </div>
+        <Form className="updated-user-info" onSubmit={this.handleSubmit}>
+         
+          <Form.Group controlId="formNewUsername">
+            <Form.Label className="label">Username:</Form.Label>
+            <Form.Control type="text" defaultValue={this.state.username} onChange={this.handleUsernameChange} />
+          </Form.Group>
+          
+          <Form.Group controlId="formNewPassword">
+            <Form.Label className="label">Password:</Form.Label>
+            <Form.Control type="password" defaultValue={this.state.password} onChange={this.handlePasswordChange} />
+          </Form.Group>
+          
+          <Form.Group controlId="formNewEmail">
+            <Form.Label className="label">Email:</Form.Label>
+            <Form.Control type="email" defaultValue={this.state.email} onChange={this.handleEmailChange} />
+          </Form.Group>
 
-        <div>
-          <Form>
-            <Form.Group controlId="formUsername">
-              <Form.Label className="label">Username:</Form.Label>
-              <Form.Control type="text" defaultValue={this.state.username}/>
-            </Form.Group>
-
-            <Form.Group controlId="formPassword">
-              <Form.Label className="label">Password:</Form.Label>
-              <Form.Control type="password" defaultValue={this.state.password}/>
-            </Form.Group>
-
-            <Form.Group controlId="formEmail">
-              <Form.Label className="label">Email:</Form.Label>
-              <Form.Control type="email" defaultValue={this.state.email}/>
-            </Form.Group>
-
-            <Form.Group controlId="formBirthday">
-              <Form.Label className="label">Birthday:</Form.Label>
-              <Form.Control type="date" defaultValue={this.state.birthday}/>
-            </Form.Group>
+          {/* <Form.Group controlId="formNewBirthday">
+            <Form.Label className="label">Birthday:</Form.Label>
+            <Form.Control type="date" defaultValue={this.state.birthday} onChange={this.handleBirthdayChange} />
+          </Form.Group> */}
 
             <div className="text-center">              
-              <Button variant="primary" type="submit" onClick={()=>{updateUser(token)}}>Update User</Button>
+              <Button variant="primary" type="submit">Update User Info</Button>
             </div>  
-          </Form>
-        </div>
+          
+        </Form>
         </Col>
       </Row>
     );  
