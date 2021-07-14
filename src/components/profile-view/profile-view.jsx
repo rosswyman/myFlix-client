@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import './profile-view.scss'
 import { FavoriteCard } from '../favorite-card/favorite-card';
@@ -7,9 +7,11 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+
 export class ProfileView extends React.Component{
   constructor() {
     super();
+    this.myRef = React.createRef();
     this.state = {
       username: null,
       password: null,
@@ -22,28 +24,11 @@ export class ProfileView extends React.Component{
       newEmail: null
     };
 
-    this.handleUsernameChange=this.handleUsernameChange.bind(this);
-    this.handlePasswordChange=this.handlePasswordChange.bind(this);
-    this.handleEmailChange=this.handleEmailChange.bind(this);
-    // this.handleBirthdayChange=this.handleBirthdayChange(this);
+ 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleUsernameChange(event){
-    this.setState({newUsername: event.target.value});
-  }
-
-  handlePasswordChange(event){
-    this.setState({newPassword: event.target.value});
-  }
-
-  handleEmailChange(event){
-    this.setState({newEmail: event.target.value});
-  }
-
-  // handleBirthdayChange(event){
-  //   this.setState({birthday: event.target.value});
-  // }
+ 
 
   handleSubmit(event) {
     
@@ -53,22 +38,48 @@ export class ProfileView extends React.Component{
     console.log('Current email: ' + this.state.email);
     console.log('Current birthday: ' + this.state.birthday);
 
-    console.log('New username: ' + this.state.newUsername);
-    console.log('New password: ' + this.state.newPassword);
-    console.log('New email: ' + this.state.newEmail);
-    // console.log('Current birthday: ' + this.state.birthday);
+    const token = localStorage.getItem("token");
+    const url = 'https://movieboom.herokuapp.com/users/' +
+        localStorage.getItem('user');
+        this.setState({loading: true})
+
+    const data = 
+    {
+      Username: this.state.username,
+      Password: this.state.password,
+      Email: this.state.email,
+      Birthdate: this.state.birthdate
+    };
     
+    const config = {
+      method: 'put',
+      url: url,
+      headers: { 
+        'Authorization': `Bearer ${token}`, 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+    
+    axios(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      localStorage.setItem("user", data.Username);
+      this.setState({user: response.data.Username})
+      this.getUser(token)
+    })
+    .catch(function (error) {
+      console.log(error);
+      
+    });
+
     event.preventDefault();
   }
-
-  
 
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
     this.getUser(accessToken);
   }
-
-  
 
   getUser(token) {
     let url = 'https://movieboom.herokuapp.com/users/' +
@@ -98,6 +109,7 @@ export class ProfileView extends React.Component{
       localStorage.getItem("user") +
       "/movies/remove/" +
       movie._id;
+
       const config = {
         method: 'post',
         url: url,
@@ -106,16 +118,56 @@ export class ProfileView extends React.Component{
           'Content-type': 'application/json'
         }
       };
+      
       console.log(url)
+      
       axios(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        this.componentDidMount();      
+        this.getUser(token)
       })
       .catch(function (error) {
         console.log(error);
       });
    }
+
+   handleChange(event) {
+    let { name, value } = event.target;
+    this.setState({
+      [name]: value
+    })
+  }
+
+
+ deleteUser(user) {
+  const token = localStorage.getItem("token");
+  const url =
+    "https://movieboom.herokuapp.com/users/" +
+    localStorage.getItem("user");
+
+    const config = {
+      method: 'delete',
+      url: url,
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+      }
+    };
+    
+    console.log(url)
+    
+    axios(config)
+    .then((response) => {
+      console.log(JSON.stringify(response.data));
+      alert('User '+JSON.stringify(response.data))
+      
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');   
+      window.open('/', '_self');
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+ }
   
   render(){
     const{  movies, token, onBackClick }=this.props;
@@ -130,30 +182,24 @@ export class ProfileView extends React.Component{
    
 
     if (loading) return '<div>Loading...</div>';
+
     return (
       <Row className="profile-view justify-content-md-center">       
         <Col>
+        <h1>Welcome {username}</h1>
           <div className="user-username">
             <Row>
-              <Col xs={2}>
+              <Col xs={3}>
               <span className="label">Username: </span>
               </Col>
               <Col>
               <span className="value">{username}</span>
-              </Col>
-              
-              
+              </Col>  
             </Row>            
           </div>
-
-        {/* <div className="user-password">
-          <span className="label">Current Password: </span>
-          <span className="value">{password}</span>
-        </div> */}
-
         <div className="user-email">
           <Row>
-            <Col xs={2}>
+            <Col xs={3}>
               <span className="label">E-mail: </span>
             </Col>
             <Col>
@@ -164,7 +210,7 @@ export class ProfileView extends React.Component{
         
         <div className="user-birthday">
           <Row>
-            <Col xs={2}>
+            <Col xs={3}>
               <span className="label">Birthday: </span>
             </Col>
             <Col>
@@ -206,30 +252,39 @@ export class ProfileView extends React.Component{
         </Row>
         
 
-        <Form className="updated-user-info" onSubmit={this.handleSubmit}>
-         
+      
+        <Form className="updated-user-info">
+         <h3 style={{ textAlign: "center" }}>Update User Profile</h3>
           <Form.Group controlId="formNewUsername">
             <Form.Label className="label">Username:</Form.Label>
-            <Form.Control type="text" defaultValue={this.state.username} onChange={this.handleUsernameChange} />
+            <Form.Control type="text" name="username" onChange={(event) => this.handleChange(event)} placeholder="Update username"/>
           </Form.Group>
           
           <Form.Group controlId="formNewPassword">
             <Form.Label className="label">Password:</Form.Label>
-            <Form.Control type="password" defaultValue={this.state.password} onChange={this.handlePasswordChange} />
+            <Form.Control type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Update password" />
           </Form.Group>
           
           <Form.Group controlId="formNewEmail">
             <Form.Label className="label">Email:</Form.Label>
-            <Form.Control type="email" defaultValue={this.state.email} onChange={this.handleEmailChange} />
+            <Form.Control type="email" name="email" onChange={(event) => this.handleChange(event)} placeholder="Update email" />
           </Form.Group>
 
-          {/* <Form.Group controlId="formNewBirthday">
+          <Form.Group controlId="formNewBirthday">
             <Form.Label className="label">Birthday:</Form.Label>
-            <Form.Control type="date" defaultValue={this.state.birthday} onChange={this.handleBirthdayChange} />
-          </Form.Group> */}
+            <Form.Control type="date" name="birthday" onChange={(event) => this.handleChange(event)} placeholder="Update birthday" value={birthday} />
+          </Form.Group>
 
             <div className="text-center">              
-              <Button variant="primary" type="submit">Update User Info</Button>
+       
+              <Row>
+                <Col>
+                  <Button variant="primary" type="submit" onClick={this.handleSubmit}>Update User Info</Button>
+                </Col>
+                <Col>
+                  <Button variant="danger" onClick={this.deleteUser}>Delete User</Button>
+                </Col>
+              </Row>
             </div>  
           
         </Form>
