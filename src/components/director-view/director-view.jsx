@@ -1,13 +1,14 @@
 import React from 'react';
+
+import './director-view.scss';
+
+import PropTypes from 'prop-types';
+
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
-import PropTypes from 'prop-types';
-import './director-view.scss';
 
 export class DirectorView extends React.Component{
- 
-
   render(){
     const{ director, onBackClick }=this.props;
     console.log({director})
@@ -25,7 +26,7 @@ export class DirectorView extends React.Component{
             <span>Biography: {director.Bio}</span>
           </div>
           <div className="text-center">
-          <Button onClick={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
+            <Button onClick={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
           </div>
         </Col>   
       </Row>

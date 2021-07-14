@@ -3,13 +3,11 @@ import axios from 'axios';
 
 import './main-view.scss';
 
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
-
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import {Navbar,Nav,Form,FormControl} from 'react-bootstrap';
-import Button from 'react-bootstrap/Button';
-import { Link } from "react-router-dom";
+import {Navbar,Nav} from 'react-bootstrap';
+
+import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 import { LoginView } from '../login-view/login-view';
 import { RegistrationView } from '../registration-view/registration-view';
