@@ -109,7 +109,7 @@ export class MainView extends React.Component{
         {/* Begin code for navbar */}
         <header>
           <Navbar bg="light" collapseOnSelect fixed='top' expand="lg" variant="light">
-            <Navbar.Brand href="PLACEHOLDER" >myFlix</Navbar.Brand>
+            <Navbar.Brand href="/" >myFlix</Navbar.Brand>
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="nav-items">
@@ -123,25 +123,7 @@ export class MainView extends React.Component{
         </header>
         {/* End code for navbar */}
 
-        {/* Begin code working 2021_0708 1022 */}
-        {/* <Row className="main-view justify-content-md-center">
-          {selectedMovie
-            ? (
-              <Col>
-                <MovieView movie={selectedMovie} onBackClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }} />
-              </Col>
-            )
-            : movies.map(movie => (
-              
-              <Col sm={6} md={3}> 
-                <MovieCard key={movie._id} movieData={movie} onMovieClick={newSelectedMovie => { this.setSelectedMovie(newSelectedMovie); }}/>
-              </Col>
-              
-            ))
-          }
-        </Row> */}
-        {/* End code working 2021_0708 1022 */}
-      
+             
         <Router>
           <Row className="main-view justify-content-md-center">
 
@@ -194,7 +176,7 @@ export class MainView extends React.Component{
             } />
 
             <Route path={`/users/${user}`} render={({history }) => {
-              
+              if (!user) return <Redirect to="/" />
               return <Col md={8}>
               <ProfileView movies={movies} onBackClick={() => history.goBack()} />
               
