@@ -11,23 +11,19 @@ import Form from 'react-bootstrap/Form';
 export class ProfileView extends React.Component{
   constructor() {
     super();
-    this.myRef = React.createRef();
     this.state = {
       username: null,
       password: null,
       email: null,
       birthday: null,
       favoriteMovies: [],
-      loading: false,
-      newUsername: null,
-      newPassword: null,
-      newEmail: null
+      loading: false,      
     };
  
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.updateUser = this.updateUser.bind(this);
   } 
 
-  handleSubmit(event) {
+  updateUser(event) {
     console.log('Current username: ' + this.state.username);
     console.log('Current password: ' + this.state.password);
     console.log('Current email: ' + this.state.email);
@@ -74,6 +70,13 @@ export class ProfileView extends React.Component{
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
     this.getUser(accessToken);
+  }
+
+  componentDidUpdate(prevState){
+    if(this.username !== prevState.username){
+      console.log('Username has changed')
+    }
+
   }
 
   getUser(token) {
@@ -133,8 +136,7 @@ export class ProfileView extends React.Component{
     })
   }
 
-
- deleteUser(user) {
+  deleteUser() {
   const token = localStorage.getItem("token");
   const url =
     "https://movieboom.herokuapp.com/users/" +
@@ -165,7 +167,7 @@ export class ProfileView extends React.Component{
  }
   
   render(){
-    const{  movies, token, onBackClick }=this.props;
+    const{  movies, user, onBackClick }=this.props;
     const {loading, username, password, email, birthday} = this.state;
 
     // This takes the list of all movies and filters so that only those in the user favorites show up
@@ -235,7 +237,7 @@ export class ProfileView extends React.Component{
           </Row>
 
           <Form className="updated-user-info">
-          <h3 style={{ textAlign: "center" }}>Update User Profile</h3>
+            <h3 style={{ textAlign: "center" }}>Update User Profile</h3>
             <Form.Group controlId="formNewUsername">
               <Form.Label className="label">Username:</Form.Label>
               <Form.Control type="text" name="username" onChange={(event) => this.handleChange(event)} placeholder="Update username"/>
@@ -243,7 +245,8 @@ export class ProfileView extends React.Component{
             
             <Form.Group controlId="formNewPassword">
               <Form.Label className="label">Password:</Form.Label>
-              <Form.Control type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Update password" />
+              <Form.Control required type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Re-enter/Update password" />
+              <Form.Text className="text-muted">Please re-enter or change password</Form.Text>
             </Form.Group>
             
             <Form.Group controlId="formNewEmail">
@@ -259,7 +262,7 @@ export class ProfileView extends React.Component{
               <div className="text-center">
                 <Row>
                   <Col>
-                    <Button variant="primary" type="submit" onClick={this.handleSubmit}>Update User Info</Button>
+                    <Button variant="primary" type="submit" onClick={this.updateUser}>Update User Info</Button>                    
                   </Col>
                   <Col>
                     <Button variant="danger" onClick={this.deleteUser}>Delete User</Button>
