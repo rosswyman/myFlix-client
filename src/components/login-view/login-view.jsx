@@ -47,9 +47,7 @@ export function LoginView(props) {
             <Form.Group controlId="formPassword">
               <Form.Label className="label">Password:</Form.Label>
               <Form.Control type="password" onChange={e => setPassword(e.target.value)} />
-              <Form.Text className="text-muted">
-                Please re-enter or change password
-              </Form.Text>
+              
             </Form.Group>
           </Form>
         </Col>
