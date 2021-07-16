@@ -27,8 +27,7 @@ export class ProfileView extends React.Component{
       nameError: "",
       passwordError: "",
       emailError: "",
-      birthdayError: ""
-           
+      birthdayError: ""           
     };
     
     this.updateUser = this.updateUser.bind(this);
@@ -40,7 +39,6 @@ export class ProfileView extends React.Component{
     let emailError= "";
     let birthdayError= "";
     let pwd= document.getElementById('formNewPassword');
-
        
     if(!pwd.value){
       passwordError='You must re-enter or change your password';
@@ -69,9 +67,8 @@ export class ProfileView extends React.Component{
   updateUser(event) {
     const isValid = this.formValidation();
     
-
     if (isValid){
-      //clear error message
+      //clears error message
       this.setState(initialErrorState);
       
       console.log('Current username: ' + this.state.username);
@@ -82,34 +79,33 @@ export class ProfileView extends React.Component{
       console.log('Password error: ' + this.state.passwordError);
       console.log('Email error: ' + this.state.emailError);
       console.log('Birthday error: ' + this.state.birthdayError);
+
+      const token = localStorage.getItem("token");
+      const url = 'https://movieboom.herokuapp.com/users/' +
+          localStorage.getItem('user');
+          this.setState({loading: true})
+
+      // Define body to be sent in put request
+      const data = 
+      {
+        Username: this.state.username,
+        Password: this.state.password,
+        Email: this.state.email,
+        Birthday: this.state.birthday
+      };
       
-
-  
-    const token = localStorage.getItem("token");
-    const url = 'https://movieboom.herokuapp.com/users/' +
-        localStorage.getItem('user');
-        this.setState({loading: true})
-
-    const data = 
-    {
-      Username: this.state.username,
-      Password: this.state.password,
-      Email: this.state.email,
-      Birthday: this.state.birthday
-    };
+      // Request configuration data
+      const config = {
+        method: 'put',
+        url: url,
+        headers: { 
+          'Authorization': `Bearer ${token}`, 
+          'Content-Type': 'application/json'
+        },
+        data : data
+      };
     
-    const config = {
-      method: 'put',
-      url: url,
-      headers: { 
-        'Authorization': `Bearer ${token}`, 
-        'Content-Type': 'application/json'
-      },
-      data : data
-    };
-
-    
-       axios(config)
+      axios(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
         localStorage.setItem("user", data.Username);
@@ -120,21 +116,16 @@ export class ProfileView extends React.Component{
       .catch(function (error) {
         console.log(error);      
       });
-  
-      // event.preventDefault();
     }
     else{
       event.preventDefault();
     }
-
-    }
-      
+  }      
 
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
     this.getUser(accessToken);
   }
-
 
   getUser(token) {
     let url = 'https://movieboom.herokuapp.com/users/' +
@@ -225,8 +216,7 @@ export class ProfileView extends React.Component{
   
   render(){
     const{  movies, user, onBackClick }=this.props;
-    const {loading, username, password, email, birthday} = this.state;
-    
+    const {loading, username, password, email, birthday} = this.state;    
 
     // This takes the list of all movies and filters so that only those in the user favorites show up
     const favoriteMovieList = movies.filter((movie) => {
@@ -337,7 +327,3 @@ export class ProfileView extends React.Component{
     );  
 }
 }
-Collapse
-
-
-
