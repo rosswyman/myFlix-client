@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import axios from 'axios';
 import './profile-view.scss'
 import { FavoriteCard } from '../favorite-card/favorite-card';
@@ -17,11 +17,21 @@ export class ProfileView extends React.Component{
       email: null,
       birthday: null,
       favoriteMovies: [],
-      loading: false,      
+      loading: false,
+      nameError: "this is a name error",
+      passwordError: "this is a password error",
+      emailError: "this is an email error",
+      birthdayError: "this is a birthday error"
+           
     };
- 
+    
     this.updateUser = this.updateUser.bind(this);
   } 
+
+  formValidation =() =>{
+
+  } 
+
 
   updateUser(event) {
     console.log('Current username: ' + this.state.username);
@@ -29,6 +39,7 @@ export class ProfileView extends React.Component{
     console.log('Current email: ' + this.state.email);
     console.log('Current birthday: ' + this.state.birthday);
 
+  
     const token = localStorage.getItem("token");
     const url = 'https://movieboom.herokuapp.com/users/' +
         localStorage.getItem('user');
@@ -51,33 +62,34 @@ export class ProfileView extends React.Component{
       },
       data : data
     };
-    
-    axios(config)
-    .then((response) => {
-      console.log(JSON.stringify(response.data));
-      localStorage.setItem("user", data.Username);
-      this.setState({user: response.data.Username})
-      this.getUser(token)
-      window.open('/users/'+localStorage.getItem("user"), '_self');
-    })
-    .catch(function (error) {
-      console.log(error);      
-    });
 
-    event.preventDefault();
-  }
+    
+       axios(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        localStorage.setItem("user", data.Username);
+        this.setState({user: response.data.Username})
+        this.getUser(token)
+        window.open('/users/'+localStorage.getItem("user"), '_self');
+      })
+      .catch(function (error) {
+        console.log(error);      
+      });
+  
+      event.preventDefault();
+
+    }
+    
+
+    
+   
+  
 
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
     this.getUser(accessToken);
   }
 
-  componentDidUpdate(prevState){
-    if(this.username !== prevState.username){
-      console.log('Username has changed')
-    }
-
-  }
 
   getUser(token) {
     let url = 'https://movieboom.herokuapp.com/users/' +
@@ -169,6 +181,7 @@ export class ProfileView extends React.Component{
   render(){
     const{  movies, user, onBackClick }=this.props;
     const {loading, username, password, email, birthday} = this.state;
+    
 
     // This takes the list of all movies and filters so that only those in the user favorites show up
     const favoriteMovieList = movies.filter((movie) => {
@@ -236,29 +249,33 @@ export class ProfileView extends React.Component{
             </Col>
           </Row>
 
-          <Form className="updated-user-info">
+          <Form noValidate className="updated-user-info" onSubmit={this.updateUser} id='updateForm'>
             <h3 style={{ textAlign: "center" }}>Update User Profile</h3>
             <Form.Group controlId="formNewUsername">
               <Form.Label className="label">Username:</Form.Label>
-              <Form.Control type="text" name="username" onChange={(event) => this.handleChange(event)} placeholder="Update username"/>
+              <Form.Control required type="text" name="username" onChange={(event) => this.handleChange(event)} placeholder="Update username"/>
+              <div className="error-message">{this.state.nameError}</div>
             </Form.Group>
             
             <Form.Group controlId="formNewPassword">
               <Form.Label className="label">Password:</Form.Label>
-              <Form.Control required type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Re-enter/Update password" />
-              <Form.Text className="text-muted">Please re-enter or change password</Form.Text>
+              <Form.Control required type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Re-enter/Update password" />              
+              {/* <Form.Text className="text-muted">Please re-enter or change password</Form.Text> */}
+              <div className="error-message">{this.state.passwordError}</div>
             </Form.Group>
             
             <Form.Group controlId="formNewEmail">
               <Form.Label className="label">Email:</Form.Label>
               <Form.Control type="email" name="email" onChange={(event) => this.handleChange(event)} placeholder="Update email" />
+              <div className="error-message">{this.state.emailError}</div>
             </Form.Group>
 
             <Form.Group controlId="formNewBirthday">
               <Form.Label className="label">Birthday:</Form.Label>
               <Form.Control type="date" name="birthday" onChange={(event) => this.handleChange(event)} placeholder="Update birthday" />
+              <div className="error-message">{this.state.birthdayError}</div>
             </Form.Group>
-
+            <Form.Group>
               <div className="text-center">
                 <Row>
                   <Col>
@@ -269,7 +286,7 @@ export class ProfileView extends React.Component{
                   </Col>
                 </Row>
               </div>  
-            
+              </Form.Group>
           </Form>
         </Col>
       </Row>
