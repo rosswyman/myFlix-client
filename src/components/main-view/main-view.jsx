@@ -92,40 +92,40 @@ export class MainView extends React.Component{
         newUser
       });
     }
-
+   
     
   render(){
     
     const{movies, user, selectedMovie}=this.state // This is an example of object destruction
-    
+    const showHeader = () =>{
+      if(user !== null){
+        return <Navbar bg="light" collapseOnSelect fixed='top' expand="lg" variant="light">
+          <Navbar.Brand href="/" >myFlix</Navbar.Brand>
+          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Collapse id="basic-navbar-nav">
+            <Nav className="nav-items">
+              <Nav.Link href="/">Movies</Nav.Link>
+              <Nav.Link href={`/users/${user}`}>Account</Nav.Link>              
+              <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
+            </Nav>
+          </Navbar.Collapse>
+        </Navbar>
+      }
+      
+    }
     return (
       
       <div className="main-view-all">
-
-        {/* Begin code for navbar */}
+             
         <header>
-          <Navbar bg="light" collapseOnSelect fixed='top' expand="lg" variant="light">
-            <Navbar.Brand href="/" >myFlix</Navbar.Brand>
-            <Navbar.Toggle aria-controls="basic-navbar-nav" />
-            <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="nav-items">
-                <Nav.Link href="/">Movies</Nav.Link>
-                <Nav.Link href={`/users/${user}`}>Account</Nav.Link>
-                
-                <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
-              </Nav>
-            </Navbar.Collapse>
-          </Navbar>
+          {showHeader()}  
         </header>
-        {/* End code for navbar */}
-
              
         <Router>
           <Row className="main-view justify-content-md-center">
 
             <Route exact path="/" render={() => {
               
-
               //  If there is no user, the LoginView is rendered. If there is a user logged in, the user details are *passed as a prop to the LoginView
               if (!user) return <Col>
                 <LoginView onLoggedIn={user => this.onLoggedIn(user)} />
@@ -184,7 +184,5 @@ export class MainView extends React.Component{
 
       </div>
     );
-  
-    
   }
 }
