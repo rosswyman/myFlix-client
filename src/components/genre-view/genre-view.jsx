@@ -5,10 +5,8 @@ import Button from 'react-bootstrap/Button';
 import PropTypes from 'prop-types';
 import './genre-view.scss';
 
-import { MovieCard } from '../movie-card/movie-card';
 
 export class GenreView extends React.Component{
- 
 
   render(){
     const{ genre, movies, onBackClick }=this.props;
