@@ -7,6 +7,12 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
+const initialErrorState ={
+  nameError: "",
+  passwordError: "",
+  emailError: "",
+  birthdayError: ""
+}
 
 export class ProfileView extends React.Component{
   constructor() {
@@ -18,26 +24,65 @@ export class ProfileView extends React.Component{
       birthday: null,
       favoriteMovies: [],
       loading: false,
-      nameError: "this is a name error",
-      passwordError: "this is a password error",
-      emailError: "this is an email error",
-      birthdayError: "this is a birthday error"
+      nameError: "",
+      passwordError: "",
+      emailError: "",
+      birthdayError: ""
            
     };
     
     this.updateUser = this.updateUser.bind(this);
   } 
 
-  formValidation =() =>{
+  formValidation = () =>{
+    let nameError= "";
+    let passwordError= "";
+    let emailError= "";
+    let birthdayError= "";
+    let pwd= document.getElementById('formNewPassword');
 
-  } 
+       
+    if(!pwd.value){
+      passwordError='You must re-enter or change your password';
+    }
+
+    if (!this.state.email.includes('@' && '.')){
+      emailError= 'This does not appear to be a valid email';
+    }
+
+    if(!this.state.birthday){
+      birthdayError='Birthday cannot be blank';
+    }    
+
+    if(nameError || passwordError || emailError || birthdayError){
+      this.setState({nameError});
+      this.setState({passwordError})
+      this.setState({emailError});
+      this.setState({birthdayError});
+      return false;
+    }
+
+    return true
+  }; 
 
 
   updateUser(event) {
-    console.log('Current username: ' + this.state.username);
-    console.log('Current password: ' + this.state.password);
-    console.log('Current email: ' + this.state.email);
-    console.log('Current birthday: ' + this.state.birthday);
+    const isValid = this.formValidation();
+    
+
+    if (isValid){
+      //clear error message
+      this.setState(initialErrorState);
+      
+      console.log('Current username: ' + this.state.username);
+      console.log('Current password: ' + this.state.password);
+      console.log('Current email: ' + this.state.email);
+      console.log('Current birthday: ' + this.state.birthday);
+      console.log('Name error: ' + this.state.nameError);
+      console.log('Password error: ' + this.state.passwordError);
+      console.log('Email error: ' + this.state.emailError);
+      console.log('Birthday error: ' + this.state.birthdayError);
+      
 
   
     const token = localStorage.getItem("token");
@@ -50,7 +95,7 @@ export class ProfileView extends React.Component{
       Username: this.state.username,
       Password: this.state.password,
       Email: this.state.email,
-      Birthdate: this.state.birthdate
+      Birthday: this.state.birthday
     };
     
     const config = {
@@ -76,14 +121,14 @@ export class ProfileView extends React.Component{
         console.log(error);      
       });
   
+      // event.preventDefault();
+    }
+    else{
       event.preventDefault();
+    }
 
     }
-    
-
-    
-   
-  
+      
 
   componentDidMount() {
     let accessToken = localStorage.getItem("token");
@@ -260,7 +305,6 @@ export class ProfileView extends React.Component{
             <Form.Group controlId="formNewPassword">
               <Form.Label className="label">Password:</Form.Label>
               <Form.Control required type="password" name="password" onChange={(event) => this.handleChange(event)} placeholder="Re-enter/Update password" />              
-              {/* <Form.Text className="text-muted">Please re-enter or change password</Form.Text> */}
               <div className="error-message">{this.state.passwordError}</div>
             </Form.Group>
             
