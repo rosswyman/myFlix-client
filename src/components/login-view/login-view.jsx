@@ -6,7 +6,7 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
-import {Navbar,Nav,Form,FormControl} from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 export function LoginView(props) {
@@ -29,7 +29,8 @@ export function LoginView(props) {
       props.onLoggedIn(data);
     })
     .catch(e => {      
-      console.log(e)      
+      console.log(e)
+      alert('Invalid username or password')      ;
     });
   };
 
