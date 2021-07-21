@@ -9,7 +9,6 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 // #0
 import { setMovies } from '../../actions/actions';
 
-
 import MoviesList from '../movies-list/movies-list';
 // import { MovieCard } from '../movie-card/movie-card';
 
