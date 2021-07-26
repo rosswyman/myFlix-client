@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 
+import { connect } from 'react-redux';
+import { setUser } from '../../actions/actions';
+
 import { Form } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
