@@ -108,8 +108,7 @@ export class ProfileView extends React.Component{
       axios(config)
       .then((response) => {
         console.log(JSON.stringify(response.data));
-        localStorage.setItem("user", data.Username);
-        this.setState({user: response.data.Username})
+        localStorage.setItem("user", data.Username);        
         this.getUser(token)
         window.open('/users/'+localStorage.getItem("user"), '_self');
       })
@@ -136,7 +135,7 @@ export class ProfileView extends React.Component{
             headers: { Authorization: `Bearer ${token}` },
         })
         .then((response) => {
-          console.log(response.data)
+          // console.log(response.data)
             this.setState({
               username: response.data.Username,
               password: response.data.Password,
