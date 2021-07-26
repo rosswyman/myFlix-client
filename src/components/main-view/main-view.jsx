@@ -31,7 +31,7 @@ class MainView extends React.Component{
     super();
     this.state={
       selectedMovie: null,
-      user: null,   
+      // user: null,   
     };
   }
   
@@ -51,6 +51,8 @@ class MainView extends React.Component{
       headers: { Authorization: `Bearer ${token}`}
     })
     .then(response => {
+      // console.log('The following is the response.data')
+      // console.log(response.data)
       this.props.setMovies(response.data);
     })
     .catch(function (error) {
@@ -98,9 +100,16 @@ class MainView extends React.Component{
    
     
   render(){
-    
+    console.log(this.props)
+    console.log(this.state)
     let { movies } = this.props;
+    // let movies = this.props.movies
+    // console.log('The following is the movies object')
+    // console.log(movies)
     let { user } = this.state;
+    // console.log('The following is the user object')
+    // console.log(user)
+    
     
     const showHeader = () =>{
       if(user !== null){
