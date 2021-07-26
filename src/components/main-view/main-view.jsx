@@ -7,7 +7,7 @@ import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
 
 // #0
-import { setMovies } from '../../actions/actions';
+import { setMovies, setUser } from '../../actions/actions';
 
 import MoviesList from '../movies-list/movies-list';
 // import { MovieCard } from '../movie-card/movie-card';
@@ -41,7 +41,8 @@ class MainView extends React.Component{
         user: localStorage.getItem('user'),
  
       });
-      this.getMovies(accessToken);       
+      this.getMovies(accessToken);
+      this.getUser(accessToken);
     }
   }
   
@@ -59,6 +60,22 @@ class MainView extends React.Component{
     });
   }
 
+  getUser(token) {
+    let url = 'https://movieboom.herokuapp.com/users/' +
+        localStorage.getItem('user');
+        
+    axios
+        .get(url, {
+            headers: { Authorization: `Bearer ${token}` },
+        })
+        .then((response) => {
+          this.props.setUser(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        
+  }
  
 
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
@@ -84,12 +101,7 @@ class MainView extends React.Component{
     window.open('/', '_self');
   }
 
-    //  When a user successfully registers
-     onRegistered(newUser){
-      this.setState({
-        newUser
-      });
-    }
+    
    
     
   render(){
@@ -112,7 +124,7 @@ class MainView extends React.Component{
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="nav-items">
               <Nav.Link href="/">Movies</Nav.Link>
-              <Nav.Link href={`/users/${user}`}>Account</Nav.Link>              
+              <Nav.Link href={`/users/${user}`}>Account</Nav.Link>                                
               <Nav.Link onClick={() => this.onLoggedOut()}>Log Out</Nav.Link>     
             </Nav>
           </Navbar.Collapse>
@@ -191,8 +203,10 @@ class MainView extends React.Component{
 
 // #7
 let mapStateToProps = state => {
-  return { movies: state.movies }
+  return { 
+    movies: state.movies,
+    user: state.user, }
 }
 
 // #8
-export default connect(mapStateToProps, { setMovies } )(MainView);
+export default connect(mapStateToProps, { setMovies, setUser } )(MainView);
