@@ -1,13 +1,6 @@
 .my-flix {
   color: steelblue;
 }
-.card-text {
-  font-size: small;
-}
-
-.card {
-  margin-bottom: 20px;
-}
 .movie-view {
   background-color: #f8f9fa;
 }
@@ -22,5 +15,25 @@
 
 .label {
   font-weight: bold;
+}
+
+.genre-name {
+  font-weight: bold;
+}
+.back-button-col {
+  margin: 10px;
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.card-text {
+  font-size: small;
+}
+
+.card {
+  margin-bottom: 20px;
 }
 /*# sourceMappingURL=index.22d9ca8b.css.map */
