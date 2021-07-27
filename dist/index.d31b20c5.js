@@ -41444,8 +41444,7 @@ class ProfileView extends _reactDefault.default.Component {
             },
             __self: this
         }, /*#__PURE__*/ _reactDefault.default.createElement(_buttonDefault.default, {
-            on: true,
-            Click: ()=>{
+            onClick: ()=>{
                 onBackClick(null);
             },
             variant: "outline-info",
