@@ -278,7 +278,7 @@ export class ProfileView extends React.Component{
           <Row>
             <Col className="back-button-col">
             <div className="text-center">
-              <Button on  Click={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
+              <Button onClick={()=>{onBackClick(null);}} variant="outline-info">Back</Button>
             </div>
             </Col>
           </Row>
