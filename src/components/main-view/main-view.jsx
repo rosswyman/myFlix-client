@@ -5,12 +5,9 @@ import { connect } from 'react-redux';
 
 import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
 
-
-// #0
 import { setMovies, setUser } from '../../actions/actions';
 
 import MoviesList from '../movies-list/movies-list';
-// import { MovieCard } from '../movie-card/movie-card';
 
 import './main-view.scss';
 
@@ -51,8 +48,6 @@ class MainView extends React.Component{
       headers: { Authorization: `Bearer ${token}`}
     })
     .then(response => {
-      // console.log('The following is the response.data')
-      // console.log(response.data)
       this.props.setMovies(response.data);
     })
     .catch(function (error) {
@@ -62,8 +57,7 @@ class MainView extends React.Component{
 
   getUser(token) {
     let url = 'https://movieboom.herokuapp.com/users/' +
-        localStorage.getItem('user');
-        
+        localStorage.getItem('user');        
     axios
         .get(url, {
             headers: { Authorization: `Bearer ${token}` },
@@ -75,14 +69,12 @@ class MainView extends React.Component{
           console.log(error);
         });
         
-  }
- 
+  } 
 
   /* When a user successfully logs in, this function updates the `user` property in state to that *particular user*/
 
   onLoggedIn(authData) {
- 
-    this.setState({
+     this.setState({
       user: authData.user.Username,   
     });    
   
@@ -99,23 +91,13 @@ class MainView extends React.Component{
       user: null
     });
     window.open('/', '_self');
-  }
-
-    
-   
+  }  
     
   render(){
-    console.log(this.props)
-    console.log(this.state)
     let { movies } = this.props;
-    // let movies = this.props.movies
-    // console.log('The following is the movies object')
-    // console.log(movies)
-    let { user } = this.state;
-    // console.log('The following is the user object')
-    // console.log(user)
+    let { user } = this.state;    
     
-    
+    // This hides the header for the login and resgistration views
     const showHeader = () =>{
       if(user !== null){
         return <Navbar bg="light" collapseOnSelect fixed='top' expand="lg" variant="light">
@@ -129,9 +111,9 @@ class MainView extends React.Component{
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-      }
-      
+      }      
     }
+
     return (
       
       <div className="main-view-all">
@@ -201,12 +183,10 @@ class MainView extends React.Component{
   }
 }
 
-// #7
 let mapStateToProps = state => {
   return { 
     movies: state.movies,
     user: state.user, }
 }
 
-// #8
 export default connect(mapStateToProps, { setMovies, setUser } )(MainView);
