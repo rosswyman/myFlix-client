@@ -1,0 +1,39 @@
+.card-text {
+  font-size: small;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+.main-view {
+  background-color: white;
+  padding: 10 px;
+}
+
+.label {
+  font-weight: bold;
+}
+.movie-view {
+  background-color: #f8f9fa;
+}
+
+.label {
+  font-weight: bold;
+}
+
+.genre-name {
+  font-weight: bold;
+}
+.back-button-col {
+  margin: 10px;
+  text-align: center;
+}
+
+.error-message {
+  color: red;
+}
+
+.my-flix {
+  color: steelblue;
+}
+/*# sourceMappingURL=index.3f764291.css.map */
